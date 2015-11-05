@@ -1275,7 +1275,6 @@ void test_class_TSmArray_exceptions(Tester & t)
         "Exceptions - resize larger can fail - exception type");
     t.test(gotException,
         "Exceptions - resize larger can fail - exception thrown");
-				cout << "getCtor: " << Counter::getCtorCount() << " getDCtor " << Counter::getDctorCount() << endl;
     t.test(Counter::getCtorCount() == Counter::getDctorCount(),
         "Exceptions - resize larger has no memory leak");
 

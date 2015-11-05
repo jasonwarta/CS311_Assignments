@@ -9,9 +9,6 @@
 #ifndef TSMARRAY_H_INCLUDED
 #define TSMARRAY_H_INCLUDED
 
-#include <iostream>     // for std::cout, std::endl, std::cin
-using std::cout;
-using std::endl;
 #include <cstddef>
 using std::size_t;
 #include <algorithm>
@@ -131,18 +128,8 @@ public:
 		// if(size <= size_) size_ = size;
 		// else if (size_ < capacity_) size_ = size; //JB bug fix - ++size -> =
 		else{			
-			value_type * temp = nullptr;
-			try {
-				capacity_ = 2 * size_;
-				temp = new value_type[capacity_];
-			}
-			catch(...){
-				//cleanup if an exception is thrown. jb
-				cout << "resize exception thrown" << endl;
-				if(temp != nullptr){
-					delete[] temp;
-				}
-				throw;
+			capacity_ = 2 * size_;
+  		value_type * temp = new value_type[capacity_];
 			}
 			try {
 				copy(data_,data_ + size_,temp);  //jb - simplified this.
