@@ -1,0 +1,10 @@
+In file included from ssarray_test.cpp:10:0:
+ssarray.h: In instantiation of 'SSArray<SSA>& SSArray<SSA>::operator=(const SSArray<SSA>&) [with SSA = int]':
+ssarray_test.cpp:736:13:   required from here
+ssarray.h:46:25: error: invalid initialization of non-const reference of type 'SSArray<int>&' from an rvalue of type 'SSArray<int>*'
+   return new SSArray(rhs);
+                         ^
+ssarray.h: In member function 'SSArray<SSA>& SSArray<SSA>::operator=(const SSArray<SSA>&) [with SSA = int]':
+ssarray.h:47:2: warning: control reaches end of non-void function [-Wreturn-type]
+  }
+  ^
