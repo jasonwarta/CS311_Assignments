@@ -49,10 +49,8 @@ public:
 		
 		try{
 			if(data_ != rhs.data_ && data_ != nullptr){
-				// data_ = new value_type[capacity_];
 				copy(rhs.begin(),rhs.end(),begin());
 			}
-			// copy(rhs.begin(),rhs.end(),begin());
 		}
 		catch(...){
 			//cleanup if an exception is thrown. jb
