@@ -1182,6 +1182,7 @@ void test_class_TSmArray_ctor_dctor_count(Tester & t)
 // Does not throw (No-Throw Guarantee)
 void test_class_TSmArray_exceptions(Tester & t)
 {
+
     std::cout << "Test Suite: class TSmArray - exceptions" << std::endl;
 
     Counter::setCopyThrow(true);
@@ -1194,7 +1195,6 @@ void test_class_TSmArray_exceptions(Tester & t)
     Counter::reset(true);
     TSmArray<Counter> stt1(theSize1);
     int oldCapacity = Counter::getCtorCount();
-
     // Copy Constructor Tests
     Counter::reset(true);
     gotException = false;
@@ -1216,8 +1216,10 @@ void test_class_TSmArray_exceptions(Tester & t)
         gotException = true;
         correctType = false;
     }
+		cout << "getCtorCount " << Counter::getCtorCount() <<" getDctorCount " << Counter::getDctorCount() << endl;
     t.test(correctType, "Exceptions - copy ctor can fail - exception type");
     t.test(gotException, "Exceptions - copy ctor can fail - exception thrown");
+		cout << "getCtorCount " << Counter::getCtorCount() <<" getDctorCount " << Counter::getDctorCount() << endl;
     t.test(Counter::getCtorCount() == Counter::getDctorCount(),
         "Exceptions - copy ctor has no memory leak");
 

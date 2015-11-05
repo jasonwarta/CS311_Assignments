@@ -46,6 +46,10 @@ public:
 			// copy(rhs.begin(),rhs.end(),begin());
 		}
 		catch(...){
+			//cleanup if an exception is thrown. jb
+			if(data_ != nullptr){
+				delete[] data_;
+			}
 			throw;
 		}
 			
