@@ -36,11 +36,12 @@ public:
 	 */
 	TSmArray(const TSmArray & rhs)
 		:size_(rhs.size_),
-		 capacity_(rhs.capacity_) {
+		 capacity_(rhs.capacity_),
+		 data_(new value_type[capacity_]) {
 		
 		try{
 			if(data_ != rhs.data_ && data_ != nullptr){
-				data_ = new value_type[capacity_];
+				// data_ = new value_type[capacity_];
 				copy(rhs.begin(),rhs.end(),begin());
 			}
 			// copy(rhs.begin(),rhs.end(),begin());
