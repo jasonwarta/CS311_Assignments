@@ -107,9 +107,10 @@ public:
 	/*
 	 * 
 	 */
-	void resize(size_type size){
-		if(size <= size_) size_ = size;
-		else if (size_ < capacity_) size_ = size; //JB bug fix - ++size -> =
+	void resize(size_type n_size){
+		if(n_size <= capacity_) size_ = n_size;
+		// if(size <= size_) size_ = size;
+		// else if (size_ < capacity_) size_ = size; //JB bug fix - ++size -> =
 		else{
 			capacity_ = 2 * size_;
 			value_type * temp = new value_type[capacity_];
@@ -121,7 +122,7 @@ public:
 			std::swap(temp,data_);
 			delete[] temp;
 
-			size_ = size;
+			size_ = n_size;
 		}
 	}
 
