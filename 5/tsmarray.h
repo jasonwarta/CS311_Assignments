@@ -112,12 +112,10 @@ public:
 	/*
 	 * 
 	 */
-	void resize(size_type size){
-		if (size_ == 10) {
-		}
-		if(size <= size_) size_ = size;
-		else if (size < capacity_) size_ = size; //New size is larger than old size, but less than capacity
-		//JB bug fix - ++size -> = ,and size_ -> size. Code was looking at the OLD size when deciding whether to resize.  Result: else called too often
+	void resize(size_type n_size){
+		if(n_size <= capacity_) size_ = n_size;
+		// if(size <= size_) size_ = size;
+		// else if (size_ < capacity_) size_ = size; //JB bug fix - ++size -> =
 		else{
 			capacity_ = 2 * size_;
 			value_type * temp = new value_type[capacity_];
@@ -129,7 +127,7 @@ public:
 			std::swap(temp,data_);
 			delete[] temp;
 
-			size_ = size;
+			size_ = n_size;
 		}
 	}
 
