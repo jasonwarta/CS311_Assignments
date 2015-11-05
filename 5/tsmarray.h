@@ -1,3 +1,11 @@
+// tsmarray.h
+// Jason Warta and Jason Bright
+// 5 Nov 2015
+//
+// For CS 311 Fall 2015
+// Header for class template TSmArray
+// Used in Assignment 5
+
 #ifndef TSMARRAY_H_INCLUDED
 #define TSMARRAY_H_INCLUDED
 
