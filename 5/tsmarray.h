@@ -109,7 +109,7 @@ public:
 	 */
 	void resize(size_type size){
 		if(size <= size_) size_ = size;
-		else if (size_ < capacity_) ++size_;
+		else if (size_ < capacity_) size_ = size; //JB bug fix - ++size -> =
 		else{
 			capacity_ = 2 * size_;
 			value_type * temp = new value_type[capacity_];
