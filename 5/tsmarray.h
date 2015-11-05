@@ -81,7 +81,8 @@ public:
 	}
 
 	/*
-	 * 
+	 * Bracket Operator
+	 * Returns value at given iterator point
 	 */
 	value_type & operator[](size_type idx){
 		if(idx >= 0 && idx < size_) return data_[idx];
@@ -89,10 +90,12 @@ public:
 	}
 
 	/*
-	 * 
+	 * Const Bracket Operator
+	 * Returns value at given iterator point
 	 */
 	value_type & operator[](size_type idx) const{
 		if(idx >= 0 && idx < size_) return data_[idx];
+		return data_[0]; //Removing warning.
 	}
 
 	/*
