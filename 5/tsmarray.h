@@ -1,6 +1,9 @@
 #ifndef TSMARRAY_H_INCLUDED
 #define TSMARRAY_H_INCLUDED
 
+#include <iostream>     // for std::cout, std::endl, std::cin
+using std::cout;
+using std::endl;
 #include <cstddef>
 using std::size_t;
 #include <algorithm>
@@ -53,7 +56,7 @@ public:
 	 * pre: must pass a valid TSmArray object
 	 * post: replaces current object with passed object, and returns it by reference
 	 */
-	TSmArray & operator=(TSmArray rhs){
+	TSmArray & operator=(TSmArray rhs) {
 		swap(rhs);
 		return *this;
 	}
@@ -74,6 +77,7 @@ public:
 	 */
 	explicit TSmArray(size_type size):size_(size){
 		data_ = new value_type[size_];
+		capacity_ = size_; //jb - constructor wasn't setting capacity.  Took ~hour to find!
 	}
 
 	/*
@@ -81,6 +85,7 @@ public:
 	 */
 	value_type & operator[](size_type idx){
 		if(idx >= 0 && idx < size_) return data_[idx];
+		return data_[0]; //Removing warning.
 	}
 
 	/*
@@ -108,8 +113,11 @@ public:
 	 * 
 	 */
 	void resize(size_type size){
+		if (size_ == 10) {
+		}
 		if(size <= size_) size_ = size;
-		else if (size_ < capacity_) size_ = size; //JB bug fix - ++size -> =
+		else if (size < capacity_) size_ = size; //New size is larger than old size, but less than capacity
+		//JB bug fix - ++size -> = ,and size_ -> size. Code was looking at the OLD size when deciding whether to resize.  Result: else called too often
 		else{
 			capacity_ = 2 * size_;
 			value_type * temp = new value_type[capacity_];
