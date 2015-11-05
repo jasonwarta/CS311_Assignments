@@ -123,17 +123,29 @@ public:
 		if(n_size <= capacity_) size_ = n_size;
 		// if(size <= size_) size_ = size;
 		// else if (size_ < capacity_) size_ = size; //JB bug fix - ++size -> =
-		else{
-			capacity_ = 2 * size_;
-			value_type * temp = new value_type[capacity_];
-
-			for(size_type i = 0; i < size_; i++){
-				temp[i] = data_[i];
+		else{			
+			value_type * temp = nullptr;
+			try {
+				capacity_ = 2 * size_;
+				temp = new value_type[capacity_];
 			}
-
-			std::swap(temp,data_);
-			delete[] temp;
-
+			catch(...){
+				//cleanup if an exception is thrown. jb
+				cout << "resize exception thrown" << endl;
+				if(temp != nullptr){
+					delete[] temp;
+				}
+				throw;
+			}
+			try {
+				copy(data_,data_ + size_,temp);  //jb - simplified this.
+				std::swap(temp,data_);
+				delete[] temp;
+			}
+			catch(...) {
+				delete[] temp; // make sure the memory is deleted.
+				throw; //kick the error on
+			}	
 			size_ = n_size;
 		}
 	}
