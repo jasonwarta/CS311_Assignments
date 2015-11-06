@@ -15,6 +15,13 @@ using std::size_t;
 using std::copy;
 
 
+// Template class TSmArry
+// Impliments a "smart array" somewhat similar to std::Vector
+// Requirements: type must be assignable/swappable.
+// Class invariants:
+// Data_: pointer to data array
+// Size_: size of array;
+
 template<class TSA>
 class TSmArray{
 
@@ -30,6 +37,11 @@ public:
 	typedef const value_type * const_iterator;
 
 	//default ctor
+	//Creates a TSMArray of the desired type of size 0.
+	//Pre:  None
+	//Post: TSMArray of requested type, size 0.
+	//Error:  Exception neutral, safe(no data to alter anyways)
+	
 	TSmArray():size_(0),capacity_(0){
 		data_ = new value_type[size_];
 	}
@@ -38,6 +50,7 @@ public:
 	 * TSmArray(const TSmArray &) - copy ctor
 	 * pre: must pass a valid TSmArray object
 	 * post: replaces current object with passed object
+	 * Error: Exception neutral, safe
 	 */
 	TSmArray(const TSmArray & rhs)
 		:size_(rhs.size_),
@@ -63,6 +76,7 @@ public:
 	 * operator=(TSmArray &) - copy assignment operator
 	 * pre: must pass a valid TSmArray object
 	 * post: replaces current object with passed object, and returns it by reference
+	 * exception: neutral, safe.
 	 */
 	TSmArray & operator=(TSmArray rhs) {
 		swap(rhs);
@@ -73,6 +87,7 @@ public:
 	 * ~TSmArray - destructor
 	 * pre: none
 	 * post: array is deleted, and size is set to 0
+	 * exception:  No throw guarantee.
 	 */
 	~TSmArray(){
 		if(data_ != nullptr){
@@ -82,6 +97,11 @@ public:
 
 	/*
 	 * TSmArray(size_type)
+	 * creates a TSMArray object of give size
+	 * pre: value passed should be positive if converting from signed to unsigned number.
+	 * Otherwise created array is likely to be quite large('undefined behavior').
+	 * post: TSmArray object of given size.
+	 * exception: neutral, safe
 	 */
 	explicit TSmArray(size_type size):size_(size){
 		data_ = new value_type[size_];
@@ -91,6 +111,10 @@ public:
 	/*
 	 * Bracket Operator
 	 * Returns value at given iterator point
+	 * UNLESS value would go past range of data value, then returns first element
+	 * Pre: Value needs to be less than size_
+	 * Post: value at given position of index.
+	 * Exception: neutral, safe
 	 */
 	value_type & operator[](size_type idx){
 		if(idx >= 0 && idx < size_) return data_[idx];
@@ -100,6 +124,10 @@ public:
 	/*
 	 * Const Bracket Operator
 	 * Returns value at given iterator point
+	 * UNLESS value would go past range of data value, then returns first element
+	 * Pre: Value needs to be less than size_
+	 * Post: value at given position of index.
+	 * Exception: neutral, safe
 	 */
 	value_type & operator[](size_type idx) const{
 		if(idx >= 0 && idx < size_) return data_[idx];
@@ -107,30 +135,39 @@ public:
 	}
 
 	/*
-	 * 
+	 * Accessor: size
+	 * Pre: None
+	 * Post: returns the size of the data array
+	 * Exception: No Throw guarantee
 	 */
 	size_type size() const{
 		return size_;
 	}
 
 	/*
-	 * 
+	 * Accessor: Array empty test
+	 * Pre: None
+	 * Post: returns 1 if the size of the data array is zero.
+	 * Exception: No Throw guarantee
 	 */
 	bool empty() const{
 		return !size_;
 	}
 
 	/*
-	 * 
+	 * Resize function
+	 * Pre: A new size for the array; Not so large as to create a memory error
+	 * Post: Array changed to the new size
+	 * Exception: Neutral, safe.  
 	 */
 	void resize(size_type n_size){
 		if(n_size <= capacity_) size_ = n_size;
 		// if(size <= size_) size_ = size;
-		// else if (size_ < capacity_) size_ = size; //JB bug fix - ++size -> =
+		// else if (size_ < capacity_) size_ = size; 
+		//JB bug fix - ++size -> =
 		else{			
 			capacity_ = 2 * size_;
   		value_type * temp = new value_type[capacity_];
-			}
 			try {
 				copy(data_,data_ + size_,temp);  //jb - simplified this.
 				std::swap(temp,data_);
@@ -139,13 +176,17 @@ public:
 			catch(...) {
 				delete[] temp; // make sure the memory is deleted.
 				throw; //kick the error on
-			}	
-			size_ = n_size;
+			}
 		}
+		size_ = n_size;
 	}
 
+
 	/*
-	 * 
+	 * Insert operation
+	 * Pre: Valid position and value/item to insert
+	 * Post: array of increased size
+	 * Exception: Neutral, safe.
 	 */
 	iterator insert(iterator itr, const value_type & item){
 		size_type idx = itr - data_;
@@ -157,7 +198,10 @@ public:
 	}
 
 	/*
-	 * 
+	 * Remove operation
+	 * Pre: Valid position and value/item to remove
+	 * Post: array of reduced size
+	 * Exception: No throw guarantee
 	 */
 	iterator remove(iterator itr){
 		std::rotate(itr,itr+1,end());
@@ -166,35 +210,51 @@ public:
 	}
 
 	/*
-	 * 
+	 * Accessor: begin.
+	 * Pre: None
+	 * Post: returns pointer to beginning of data array
+	 * Exception: no throw guarantee
 	 */
 	iterator begin(){
 		return data_;
 	}
 
 	/*
-	 * 
+	 * Accessor: const begin.
+	 * Pre: None
+	 * Post: returns pointer to beginning of data array
+	 * Exception: no throw guarantee
 	 */
 	const_iterator begin() const{
 		return data_;
 	}
 
 	/*
-	 * 
+	 * Accessor: end.
+	 * Pre: None
+	 * Post: returns pointer to one past end of data array
+	 * Exception: no throw guarantee
 	 */
 	iterator end(){
 		return data_ + size_;
 	}
 
 	/*
-	 * 
+	 * Accessor: const end.
+	 * Pre: None
+	 * Post: returns pointer to one past end of data array
+	 * Exception: no throw guarantee
 	 */
 	const_iterator end() const{
 		return data_ + size_;
 	}
 
 	/*
-	 * 
+	 * Swap function
+	 * Swaps the values of two TSMArray objects
+	 * Pre: pointer to valid TSmArray
+	 * Post: swapped values
+	 * Exception: no throw guarantee (it doesn't move data that would throw)
 	 */
 	void swap(TSmArray & rhs){
 		std::swap(data_,rhs.data_);
@@ -204,9 +264,9 @@ public:
 
 
 private:
-	size_type size_;
-	size_type capacity_;
-	value_type * data_;
+	size_type size_;  //Size of array
+	size_type capacity_; //Actual 'size' of array, IE capacity to grow without resizing and moving data
+	value_type * data_;  //pointer to data array.
 
 
 };	//end of clas TSmArray
