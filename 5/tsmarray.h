@@ -20,7 +20,8 @@ using std::copy;
 // Requirements: type must be assignable/swappable.
 // Class invariants:
 // Data_: pointer to data array
-// Size_: size of array;
+// Size_: size of array
+// Capacity_: capacity of array. Internal use only.
 
 template<class TSA>
 class TSmArray{
