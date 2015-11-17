@@ -11,9 +11,10 @@ using std::swap;
 template<class SL>
 class SList{
 
+public:
 	typedef std::size_t size_type;
 	typedef SL value_type;
-
+	
 	struct LLNode{
 		value_type data_;
 		LLNode * next_;
@@ -87,7 +88,7 @@ class SList{
 	 * 
 	 */
 	bool empty(){
-
+	return true;  //just to kill error
 	}
 
 	/*
@@ -100,7 +101,7 @@ class SList{
 	/*
 	 * 
 	 */
-	void push_back(value_type & item){
+	void push_back(const value_type & item){
 
 	}
 

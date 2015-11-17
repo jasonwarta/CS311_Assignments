@@ -1,9 +1,15 @@
 #ifndef SLQUEUE_H_INCLUDED
 #define SLQUEUE_H_INCLUDED
 
+#include <cstddef>
+using std::size_t;
+#include <algorithm>
+using std::swap;
+
+
 template<class Q>
 class SLQueue{
-	
+public:
 bool empty() {
 	return true;  //just so it compiles
 }
