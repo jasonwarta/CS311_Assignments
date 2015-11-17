@@ -197,8 +197,7 @@ public:
 		while (temp != nullptr) {
 			dest = temp->data_;
 			temp = temp->next_;
-		}
-			
+		}	
 	}
 
 	/*
@@ -217,8 +216,6 @@ public:
 			save->next_ = s2; //put the temporary value into the old node
 		}
 		head_ = save;  //Put head to what it should be
-		back_->next_ = nullptr;
-		
 	}
 
 	/*
@@ -244,7 +241,7 @@ public:
 private:
 	LLNode * head_; //First item in list
 	LLNode * back_; //Last item in list
-	size_type size_ ; //Size of the list, avoids having to recalculate it
+	size_type size_; //Size of the list, avoids having to recalculate it
 
 };//end of class SList
 
