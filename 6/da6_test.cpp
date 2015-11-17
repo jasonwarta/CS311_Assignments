@@ -1,10 +1,16 @@
 // da6_test.cpp
+// VERSION 3
 // Glenn G. Chappell
 // 13 Nov 2015
+// Updated: 17 Nov 2015
 //
 // For CS 311 Fall 2015
 // Test program for class templates SList, SLQueue
 // Used in Assignment 6, Exercises A & B
+//
+// History:
+// - v2: add missing "#include <vector>"
+// - v3: eliminate spurious "return"
 
 // Includes for code to be tested
 #include "slist.h"      // For class template SList
@@ -23,6 +29,7 @@
 #include <iterator>     // for std::back_inserter
 #include <list>         // for std::list
 #include <algorithm>    // for std::equal, std::reverse
+#include <vector>       // for std::vector
 
 
 // ************************************************************************
@@ -977,10 +984,10 @@ void test_class_SList_reverse(Tester & t)
     makeList(sli1, data1.begin(), data1.end());
     sli1.reverse();
     std::reverse(data1.begin(), data1.end());
-    t.test(sli1.size() == DATA1SIZE, "reverse - size");
+    t.test(sli1.size() == size_t(DATA1SIZE), "reverse - size");
     std::deque<int> vi1;
     sli1.get(std::back_inserter(vi1));
-    t.test(vi1.size() == DATA1SIZE, "reverse - data size");
+    t.test(vi1.size() == size_t(DATA1SIZE), "reverse - data size");
     t.test(std::equal(vi1.begin(), vi1.end(), data1.begin()),
         "reverse - data values");
 
@@ -1381,7 +1388,6 @@ void test_class_SLQueue(Tester & t)
 {
     // Do all the test suites
     std::cout << "TEST SUITES FOR CLASS SLQueue" << std::endl;
-    return;
     test_class_SLQueue_types(t);
     test_class_SLQueue_default_ctor(t);
     test_class_SLQueue_push_pop(t);
