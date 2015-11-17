@@ -37,7 +37,7 @@ public:
 	 * Creates a list of size 0
 	 * Pre: None
 	 * Post: list of size 0
-	 * Exception: Safe
+	 * Exception: no throw guarantee
 	 */
 	SList(){
 		head_ = nullptr;
@@ -66,20 +66,22 @@ public:
 	 * 
 	 */
 	~SList(){
-
 	}
 
 	/*
 	 * 
 	 */
 	void swap(SList & rhs){
-
+		std::swap(head_,rhs.head_);
+		std::swap(size_,rhs.size_);
 	}
 
 	/*
 	 * 
 	 */
 	size_type size() const {
+		return size_;
+		
 		auto p = head_;
 		size_type size = 0;
 		while(p != nullptr){
@@ -90,10 +92,13 @@ public:
 	}
 
 	/*
-	 * 
+	 * empty - returns a bool indiciting whether or not the size of the list is zero
+	 * precondition: none
+	 * post: returns a true if the list is empty, otherwise false.
+	 * exception: no-throw guarantee.
 	 */
 	bool empty() const {
-	return true;  //just to kill error
+	return !size_;  //just to kill error
 	}
 
 	/*
