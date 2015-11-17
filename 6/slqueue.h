@@ -7,23 +7,28 @@ using std::size_t;
 using std::swap;
 
 
-template<class Q>
+template<class SLQ>
 class SLQueue{
 public:
-bool empty() {
+	typedef SLQ value_type;
+	typedef value_type * iterator;
+	typedef const value_type * const_iterator;	
+bool empty() const {
 	return true;  //just so it compiles
 }
 
-Q * front() {
-	return nullptr; //just so it compiles
+SLQ & front() {
+	SLQ temp; //just so it compiles
+	return temp;
 }  
 
-Q * front() const {
-	return nullptr; //just so it compiles
+SLQ & front() const {
+	SLQ temp;
+	return temp; //just so it compiles
 
 }
 
-void push(Q temp) {
+void push(SLQ temp) {
 	
 }
 

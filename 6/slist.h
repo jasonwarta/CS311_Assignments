@@ -74,7 +74,7 @@ public:
 	/*
 	 * 
 	 */
-	size_type size(){
+	size_type size() const {
 		auto p = head_;
 		size_type size = 0;
 		while(p != nullptr){
@@ -87,7 +87,7 @@ public:
 	/*
 	 * 
 	 */
-	bool empty(){
+	bool empty() const {
 	return true;  //just to kill error
 	}
 
@@ -132,6 +132,8 @@ public:
 	 * 
 	 */
 	value_type & front(){
+		value_type temp;
+		return temp;
 
 	}
 
@@ -139,7 +141,8 @@ public:
 	 * 
 	 */
 	const value_type & front() const{
-
+		value_type temp;
+		return temp;
 	}
 
 private:
