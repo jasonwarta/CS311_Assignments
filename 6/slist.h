@@ -63,16 +63,23 @@ public:
 	 * 
 	 */
 	SList(const SList & rhs){
-
+		head_ = nullptr;
+		size_ = 0;
+		auto temp = rhs.head_;
+		while (temp != nullptr) {
+			push_back(temp->data_); //store the next item in the back of the list
+			temp = temp->next_; //move to the next item
+		}
 	}
 
 	/*
 	 * copy assignment
 	 * 
 	 */
-	SList & operator=(const SList & rhs){
-
-	}
+//	SList & operator=(SList rhs){
+//		swap(rhs);
+//		return *this;
+//	}
 
 	/*
 	 * destructor
@@ -90,6 +97,7 @@ public:
 	 */
 	void swap(SList & rhs){
 		std::swap(head_,rhs.head_);
+		std::swap(back_,rhs.back_);
 		std::swap(size_,rhs.size_);
 	}
 
@@ -159,7 +167,6 @@ public:
 			back_ = temp; //point back at the new end address.
 		}
 		++size_; //add another to the list
-		//cout << "Push_back back_: " << back_ << endl;
 	}
 
 	/*
@@ -185,7 +192,12 @@ public:
 	 */
 	template<typename OutputIterator>
 	void get(OutputIterator dest) const{
-		
+		LLNode * temp = head_;
+		while (temp != nullptr) {
+			dest = temp->data_;
+			temp = temp->next_;
+		}
+			
 	}
 
 	/*
@@ -219,7 +231,6 @@ public:
 private:
 	LLNode * head_; //First item in list
 	LLNode * back_; //Last item in list
-	LLNode * spares_; //list of 'deleted' nodes
 	size_type size_ ; //Size of the list, avoids having to recalculate it
 
 };//end of class SList
