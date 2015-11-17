@@ -84,7 +84,11 @@ public:
 
 	/*
 	 * destructor
-	 * 
+	 * pre: none
+	 * post: struct is destroyed and memory released
+	 * exception: no throw guarantee
+	 * NOTE:  while loop calling pop front is because recursive delete was crashing on large lists.  
+	 * Could have avoided the function call, but didn't want to rewrite code.
 	 */
 	~SList(){
 		while (head_ != nullptr)
