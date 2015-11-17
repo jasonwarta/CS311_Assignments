@@ -15,31 +15,35 @@ template<class SLQ>
 class SLQueue{
 public:
 	typedef SLQ value_type;
-	typedef value_type * iterator;
-	typedef const value_type * const_iterator;	
+	// typedef value_type * iterator;
+	// typedef const value_type * const_iterator;	
+
+SLQueue(){
+	data_ = SList<value_type>();
+}
 	
 bool empty() const {
 	return (data_.empty());  //just so it compiles
 }
 
-SLQ & front() {
+value_type & front() {
 	return data_.front();
 }  
 
-const SLQ & front() const {
+const value_type & front() const {
 	return data_.front();
 }
 
-void push(SLQ temp) {
-	
+void push(value_type temp) {
+	data_.push_back(temp);
 }
 
 void pop() {
-	
+	data_.pop_front();
 }
 
 private: 
-	SList<SLQ> data_;  //Create the linked list for the Queue
+	SList<value_type> data_;  //Create the linked list for the Queue
 };//end class SLQueue
 
 
