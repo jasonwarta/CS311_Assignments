@@ -76,10 +76,10 @@ public:
 	 * copy assignment
 	 * 
 	 */
-//	SList & operator=(SList rhs){
-//		swap(rhs);
-//		return *this;
-//	}
+	SList & operator=(SList rhs){
+		swap(rhs);
+		return *this;
+	}
 
 	/*
 	 * destructor
@@ -196,8 +196,7 @@ public:
 		while (temp != nullptr) {
 			dest = temp->data_;
 			temp = temp->next_;
-		}
-			
+		}	
 	}
 
 	/*
@@ -206,6 +205,17 @@ public:
 	void reverse(){
 		//3 pointer rotate
 		//(head,head->next_,save)
+		LLNode * save = nullptr;
+		LLNode * next;
+
+		back_ = head_;
+		while(head_ != nullptr){
+			next = head_->next_;
+			head_->next_ = save;
+			save = head_;
+			head_ = next;
+		}
+		head_ = save;
 	}
 
 	/*
@@ -231,7 +241,7 @@ public:
 private:
 	LLNode * head_; //First item in list
 	LLNode * back_; //Last item in list
-	size_type size_ ; //Size of the list, avoids having to recalculate it
+	size_type size_; //Size of the list, avoids having to recalculate it
 
 };//end of class SList
 
