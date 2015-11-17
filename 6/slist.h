@@ -40,8 +40,9 @@ public:
 	 	 * 
 	 	 */
 		~LLNode(){
-			if (next_ != nullptr) //make sure there's another node to delete
-				delete next_; //delete any following nodes
+			if (next_ != nullptr) {//make sure there's another node to delete
+//				delete next_; //delete any following nodes
+			}
 		}
 	};//end of struct LLNode
 
@@ -76,17 +77,17 @@ public:
 	 * copy assignment
 	 * 
 	 */
-//	SList & operator=(SList rhs){
-//		swap(rhs);
-//		return *this;
-//	}
+	SList & operator=(SList rhs){
+		swap(rhs);
+		return *this;
+	}
 
 	/*
 	 * destructor
 	 * 
 	 */
 	~SList(){
-		delete head_;
+//		delete head_;
 	}
 
 	/*
@@ -206,6 +207,18 @@ public:
 	void reverse(){
 		//3 pointer rotate
 		//(head,head->next_,save)
+		LLNode * save = nullptr;
+		LLNode * s2 = nullptr;
+		back_ = head_;
+		while (head_ != nullptr) {
+			s2 = save; //Put safe into temporary value
+			save = head_; //put head into safe
+			head_ = head_->next_; //move head up one
+			save->next_ = s2; //put the temporary value into the old node
+		}
+		head_ = save;  //Put head to what it should be
+		back_->next_ = nullptr;
+		
 	}
 
 	/*
