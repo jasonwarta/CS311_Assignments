@@ -34,9 +34,14 @@ public:
 
 	/*
 	 * default ctor
-	 * 
+	 * Creates a list of size 0
+	 * Pre: None
+	 * Post: list of size 0
+	 * Exception: Safe
 	 */
 	SList(){
+		head_ = nullptr;
+		size_ = 0;
 
 	}
 
@@ -147,6 +152,7 @@ public:
 
 private:
 	LLNode * head_;
+	size_type size_ ; //Size of the list, avoids having to recalculate it
 
 };//end of class SList
 
