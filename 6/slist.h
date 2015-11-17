@@ -1,3 +1,12 @@
+// slist.h
+// Jason Warta and Jason Bright
+// 17 Nov 2015
+//
+// For CS 311 Fall 2015
+// Header for class template TSmArray
+// Used in Assignment 6
+// Note: Was going to do a fancy memory saving system, but realized that we're not guaranteed to have an efficient assignment available.
+
 #ifndef SLIST_H_INCLUDED
 #define SLIST_H_INCLUDED
 
@@ -5,8 +14,11 @@
 using std::size_t;
 #include <algorithm>
 using std::swap;
-
-
+//for testing purposes
+#include <iostream>
+#include <iomanip>
+using std::cout;
+using std::endl;
 
 template<class SL>
 class SList{
@@ -28,7 +40,8 @@ public:
 	 	 * 
 	 	 */
 		~LLNode(){
-			delete next_;
+			if (next_ != nullptr) //make sure there's another node to delete
+				delete next_; //delete any following nodes
 		}
 	};//end of struct LLNode
 
@@ -66,10 +79,14 @@ public:
 	 * 
 	 */
 	~SList(){
+		delete head_;
 	}
 
 	/*
-	 * 
+	 * Swap function
+	 * Preconditions: valid lists
+	 * Post: the objects are swapped
+	 * Exception: No throw guarantee
 	 */
 	void swap(SList & rhs){
 		std::swap(head_,rhs.head_);
@@ -77,11 +94,16 @@ public:
 	}
 
 	/*
-	 * 
+	 * Size() - Returns the size of the list
+	 * Modified to be constant time.
+	 * Pre: none
+	 * Post: returns the size of the list
+	 * Exception: no throw guarantee
 	 */
 	size_type size() const {
 		return size_;
-		
+// Old code saved just in case.		
+/*
 		auto p = head_;
 		size_type size = 0;
 		while(p != nullptr){
@@ -89,6 +111,7 @@ public:
 			size++;
 		}
 		return size;
+*/
 	}
 
 	/*
@@ -98,27 +121,62 @@ public:
 	 * exception: no-throw guarantee.
 	 */
 	bool empty() const {
-	return !size_;  //just to kill error
+	return !(size_);
 	}
 
 	/*
 	 * 
 	 */
 	void clear(){
+		if (head_ != nullptr)
+		{
+			delete head_;
+			back_ = nullptr;
+			head_ = nullptr;
 
+			/*  Stretch goal:  save on memory allocation
+			back_->next_ = spares_; //take the last item, add the existing spares to it.
+			back_ = nullptr;
+			head_ = nullptr;
+			size_ = 0; // set size to zero
+			*/
+		}
 	}
 
 	/*
-	 * 
+	 * push_back: Adds a new element to the end of the list.
+	 * exception neutral
 	 */
 	void push_back(const value_type & item){
-
+		//Stretch goal:  Memory managment
+		LLNode * temp = new LLNode(item);
+		if(head_ == nullptr){ //Check to see if the list was empty
+			head_ = temp; //head was empty, make it point to the new first item.
+			back_ = temp; //first item is also the last item
+		} else //not an empty list
+		{
+			back_->next_ = temp; //append address to the last item in the list
+			back_ = temp; //point back at the new end address.
+		}
+		++size_; //add another to the list
+		//cout << "Push_back back_: " << back_ << endl;
 	}
 
 	/*
-	 * 
+	 * Removes a node from the beginning of the list
+	 * Constant time
+	 * pre: none; if list is empty it doesn't do anything
+	 * post: first item is deleted and head_ points to the next item in the list
+	 * exception: no throw guarantee
 	 */
-	value_type & pop_front(){
+	void pop_front(){
+		if (head_ != nullptr) { //make sure the list isn't empty.  If it is, do nothing.
+			auto temp = head_; //save head into a temp variable
+			head_ = head_->next_ ; //put the address of the next link into head
+			temp->next_ = nullptr; //clear out the next address in our temp to prevent it from deleting the rest
+			delete temp; //delete the node.  
+			--size_; //keep track of the size of the list
+		}
 
 	}
 
@@ -139,24 +197,29 @@ public:
 	}
 
 	/*
-	 * 
+	 * front() - returns a pointer to the data in the first element
+	 * pre: there has to be data to return
+	 * post: returns the pointer, otherwise unknown
+	 * exception:  Currently neutral
 	 */
 	value_type & front(){
-		value_type temp;
-		return temp;
-
+		return head_->data_;
 	}
 
 	/*
-	 * 
+	 * const version of front()
+	 * pre:  there has to be data to return
+	 * post: returns a pointer to the data
+	 * exception:  Currently neutral
 	 */
 	const value_type & front() const{
-		value_type temp;
-		return temp;
+		return head_->data_;
 	}
 
 private:
-	LLNode * head_;
+	LLNode * head_; //First item in list
+	LLNode * back_; //Last item in list
+	LLNode * spares_; //list of 'deleted' nodes
 	size_type size_ ; //Size of the list, avoids having to recalculate it
 
 };//end of class SList
