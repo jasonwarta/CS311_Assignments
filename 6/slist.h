@@ -39,11 +39,11 @@ public:
 		/*
 	 	 * 
 	 	 */
-		~LLNode(){
+		// ~LLNode(){
 			// if (next_ != nullptr) {//make sure there's another node to delete
-				delete next_; //delete any following nodes
+				// delete next_; //delete any following nodes
 			// }
-		}
+		// }
 	};//end of struct LLNode
 
 	/*
@@ -91,8 +91,9 @@ public:
 	 * Could have avoided the function call, but didn't want to rewrite code.
 	 */
 	~SList(){
+		clear();
 		// while (head_ != nullptr){
-			delete head_;
+			// delete head_;
 		// }
 			// pop_front();
 		// delete head_;
@@ -138,18 +139,24 @@ public:
 	 * exception: no-throw guarantee.
 	 */
 	bool empty() const {
-	return !(size_);
+		return !(size_);
 	}
 
 	/*
 	 * 
 	 */
 	void clear(){
-		if (head_ != nullptr)
-		{
-			delete head_;
-			back_ = nullptr;
-			head_ = nullptr;
+
+		LLNode * node = head_;
+		LLNode * next;
+		while(node){
+			next = node->next_;
+			delete node;
+			node = next;
+		}
+
+		back_ = nullptr;
+		head_ = nullptr;
 
 			/*  Stretch goal:  save on memory allocation
 			back_->next_ = spares_; //take the last item, add the existing spares to it.
@@ -157,7 +164,7 @@ public:
 			head_ = nullptr;
 			size_ = 0; // set size to zero
 			*/
-		}
+		// }
 	}
 
 	/*
