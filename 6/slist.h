@@ -3,7 +3,7 @@
 // 17 Nov 2015
 //
 // For CS 311 Fall 2015
-// Header for class template TSmArray
+// Header for class template Slist
 // Used in Assignment 6
 // Note: Was going to do a fancy memory saving system, but realized that we're not guaranteed to have an efficient assignment available.
 
@@ -32,18 +32,17 @@ public:
 		LLNode * next_;
 
 		/*
-	 	 * 
+	 	 * Linked list constructor
 	 	 */
 		explicit LLNode(const value_type & data, LLNode * next = nullptr):data_(data),next_(next){}
 
 		/*
-	 	 * 
+	 	 * Destructor functionality is handled by the SList class destructor
+	 	 * we avoided the use of the example destructor because its recursive nature
+	 	 * caused a stack overflow on JB's system, and could cause stack overflow on 
+	 	 * other systems depending on stack size and linked-list size
 	 	 */
-		// ~LLNode(){
-			// if (next_ != nullptr) {//make sure there's another node to delete
-				// delete next_; //delete any following nodes
-			// }
-		// }
+
 	};//end of struct LLNode
 
 	/*
@@ -56,12 +55,13 @@ public:
 	SList(){
 		head_ = nullptr;
 		size_ = 0;
-
 	}
 
 	/*
 	 * copy ctor
-	 * 
+	 * pre: must pass a valid SList object
+	 * post: replaces current object with passed object
+	 * Exception neutral, safe
 	 */
 	SList(const SList & rhs){
 		head_ = nullptr;
@@ -75,7 +75,9 @@ public:
 
 	/*
 	 * copy assignment
-	 * 
+	 * pre: must pass a valid SList object
+	 * post: replace current object with passed object, and returns it by reference
+	 * exception neutral, safe
 	 */
 	SList & operator=(SList rhs){
 		swap(rhs);
@@ -87,20 +89,15 @@ public:
 	 * pre: none
 	 * post: struct is destroyed and memory released
 	 * exception: no throw guarantee
-	 * NOTE:  while loop calling pop front is because recursive delete was crashing on large lists.  
+	 * NOTE:  using clear() because recursive delete was crashing on large lists.  
 	 * Could have avoided the function call, but didn't want to rewrite code.
 	 */
 	~SList(){
 		clear();
-		// while (head_ != nullptr){
-			// delete head_;
-		// }
-			// pop_front();
-		// delete head_;
 	}
 
 	/*
-	 * Swap function
+	 * swap - swaps two SList objects
 	 * Preconditions: valid lists
 	 * Post: the objects are swapped
 	 * Exception: No throw guarantee
@@ -112,7 +109,7 @@ public:
 	}
 
 	/*
-	 * Size() - Returns the size of the list
+	 * size - Returns the size of the list
 	 * Modified to be constant time.
 	 * Pre: none
 	 * Post: returns the size of the list
@@ -120,16 +117,6 @@ public:
 	 */
 	size_type size() const {
 		return size_;
-// Old code saved just in case.		
-/*
-		auto p = head_;
-		size_type size = 0;
-		while(p != nullptr){
-			p = p->next_;
-			size++;
-		}
-		return size;
-*/
 	}
 
 	/*
@@ -143,7 +130,10 @@ public:
 	}
 
 	/*
-	 * 
+	 * clear
+	 * pre: none
+	 * post: list is deleted, head and back set to null
+	 * exception neutral
 	 */
 	void clear(){
 
@@ -157,18 +147,13 @@ public:
 
 		back_ = nullptr;
 		head_ = nullptr;
-
-			/*  Stretch goal:  save on memory allocation
-			back_->next_ = spares_; //take the last item, add the existing spares to it.
-			back_ = nullptr;
-			head_ = nullptr;
-			size_ = 0; // set size to zero
-			*/
-		// }
+		size_ = 0;
 	}
 
 	/*
-	 * push_back: Adds a new element to the end of the list.
+	 * push_back: Adds a new element to the end of the list
+	 * pre: must pass a item of the correct type
+	 * post: adds the item to the end of the list
 	 * exception neutral
 	 */
 	void push_back(const value_type & item){
@@ -177,7 +162,8 @@ public:
 		if(head_ == nullptr){ //Check to see if the list was empty
 			head_ = temp; //head was empty, make it point to the new first item.
 			back_ = temp; //first item is also the last item
-		} else //not an empty list
+		} 
+		else //not an empty list
 		{
 			back_->next_ = temp; //append address to the last item in the list
 			back_ = temp; //point back at the new end address.
@@ -186,6 +172,7 @@ public:
 	}
 
 	/*
+	 * pop_front
 	 * Removes a node from the beginning of the list
 	 * Constant time
 	 * pre: none; if list is empty it doesn't do anything
@@ -204,7 +191,11 @@ public:
 	}
 
 	/*
-	 * 
+	 * get
+	 * writes the contents of the linked list to the iterator
+	 * pre: must pass a writeable iterator
+	 * post: iterator contains contents of linked list
+	 * exception neutral
 	 */
 	template<typename OutputIterator>
 	void get(OutputIterator dest) const{
@@ -216,11 +207,14 @@ public:
 	}
 
 	/*
-	 * 
+	 * reverse
+	 * pre: none
+	 * post: the order of the items in the list is reversed
+	 * exception: no throw guarantee
 	 */
 	void reverse(){
 		//3 pointer rotate
-		//(head,head->next_,save)
+
 		LLNode * save = nullptr;
 		LLNode * s2 = nullptr;
 		back_ = head_;
@@ -230,6 +224,7 @@ public:
 			head_ = head_->next_; //move head up one
 			save->next_ = s2; //put the temporary value into the old node
 		}
+
 		head_ = save;  //Put head to what it should be
 	}
 
