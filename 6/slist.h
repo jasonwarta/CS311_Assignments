@@ -40,9 +40,9 @@ public:
 	 	 * 
 	 	 */
 		~LLNode(){
-			if (next_ != nullptr) {//make sure there's another node to delete
+			// if (next_ != nullptr) {//make sure there's another node to delete
 				delete next_; //delete any following nodes
-			}
+			// }
 		}
 	};//end of struct LLNode
 
@@ -91,9 +91,11 @@ public:
 	 * Could have avoided the function call, but didn't want to rewrite code.
 	 */
 	~SList(){
-		while (head_ != nullptr)
-			pop_front();
-//		delete head_;
+		// while (head_ != nullptr){
+			delete head_;
+		// }
+			// pop_front();
+		// delete head_;
 	}
 
 	/*
