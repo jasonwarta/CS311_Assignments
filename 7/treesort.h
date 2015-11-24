@@ -27,6 +27,14 @@ struct Node{
 	Node<N> * left_ = nullptr;
 	Node<N> * right_ = nullptr;
 	// size_t size_;
+	
+	~Node() {
+		if (left_ != nullptr)
+			delete left_;
+		if (right_ != nullptr)
+			delete right_;
+			
+	}
 
 	void add(Node<N> * & root, N item){  //recursion removed version
 		auto * nPointer = root;
@@ -95,6 +103,7 @@ void treesort(FDIter first, FDIter last)
     	tree->add(tree,*i);
     }
     tree->inorder(tree,first);
+		delete tree;
 
     // THE FOLLOWING IS DUMMY CODE. IT WILL PASS ALL TESTS. BUT IT DOES
     // NOT MEET THE REQUIREMENTS OF THE ASSIGNMENT.
