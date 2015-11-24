@@ -1,4 +1,12 @@
-// treesort.h  UNFINISHED
+// treesort.h
+// Jason Warta and Jason Bright
+// 24 Nov 2015
+//
+// For CS 311 Fall 2015
+// Header for template treesort and associated structures and functions
+// Used in Assignment 7
+// ***********************
+// Based off of code by 
 // Glenn G. Chappell
 // 19 Nov 2015
 //
@@ -10,24 +18,31 @@
 
 #include <type_traits>
 using std::remove_reference;
-#include <algorithm>
-using std::stable_sort;
-using std::copy;
-#include <vector>
-using std::vector;
-#include <iterator>
-using std::distance;
-#include <iostream>
 
-// int count = 0;
-
-template<typename N>
+/* Struct Node 
+ * Creates a node that handles type N
+ * Invariants:  
+ * left_ = left node, if present, else nullptr
+ * right_ = right version
+ * data_ = the data contained in the node, of user type.
+ * Note:  If you delete a node, it deletes all of it's children.
+*/
+template<typename Ntype>
 struct Node{
-	N data_;
-	Node<N> * left_ = nullptr;
-	Node<N> * right_ = nullptr;
-	// size_t size_;
+	Ntype data_;
+	Node<Ntype> * left_ = nullptr;
+	Node<Ntype> * right_ = nullptr;
 	
+// Destructor
+// Destroy a Node
+// Pre:
+//     None
+// Post:
+//     The node and all of it's children will be deleted
+// Requirements on Types:
+//     N/A
+// Exception safety guarantee:
+//     No throw guarantee;
 	~Node() {
 		if (left_ != nullptr)
 			delete left_;
@@ -35,8 +50,17 @@ struct Node{
 			delete right_;
 			
 	}
-
-	void add(Node<N> * & root, N item){  //recursion removed version
+// add
+// Add a Node, non-recursive version.
+// Pre:
+//     Internal use only; pointer to root of tree, as well as a value to insert
+// Post:
+//     A node is added in the correct spot.
+// Requirements on Types:
+//     N/A - if you've already created a node, as lont as an error hasn't been thrown.
+// Exception safety guarantee:
+//     exception neutral;  Note that New is used, so it can throw.
+	void add(Node<Ntype> * & root, Ntype item){  //recursion removed version
 		auto * nPointer = root;
 		while(1) { //Keep looping until we hit a return.
 			if(item < nPointer->data_){
@@ -44,7 +68,7 @@ struct Node{
 					nPointer = nPointer->left_ ; //Move to the left child
 				}
 				else {
-					nPointer->left_ = new Node<N>; //Empty spot found, adding node
+					nPointer->left_ = new Node<Ntype>; //Empty spot found, adding node
 					nPointer->left_->data_ = item; //put value in
 					return; //New node added, leave function
 				}
@@ -54,16 +78,26 @@ struct Node{
 					nPointer = nPointer->right_; //Move to right child
 				}
 				else {
-					nPointer->right_ = new Node<N>;  //empty spot found, adding node
+					nPointer->right_ = new Node<Ntype>;  //empty spot found, adding node
 					nPointer->right_->data_ = item;  //put value in
 					return; //New node added, leave function
 				}
 			}
 		}
 	}
-
+// inorder
+// Does an inorder sort on a tree.
+// Pre:
+//     Should only be called internally by treesort or recursively by itself
+//		
+// Post:
+//     The data will be inorder sorted
+// Requirements on Types:
+//     The data must be comparable with the < operator and copy =, not have a throwing destructor.
+// Exception safety guarantee:
+//     Exception neutral
 	template<typename FDIter>
-	void inorder(Node<N> * root, FDIter & itr){
+	void inorder(Node<Ntype> * root, FDIter & itr){
 		if(root->left_ != nullptr){
 			inorder(root->left_,itr);
 		}
@@ -80,13 +114,14 @@ struct Node{
 // treesort
 // Sort a given range using Treesort.
 // Pre:
-//     ???
+//     Must be given valid forward iterators, last must be after first.
+//		
 // Post:
-//     ???
+//     The data will be treesorted
 // Requirements on Types:
-//     ???
+//     The data must be comparable with the < operator and copy=, not have a throwing destructor.
 // Exception safety guarantee:
-//     ???
+//     Exception neutral
 template<typename FDIter>
 void treesort(FDIter first, FDIter last)
 {
@@ -104,13 +139,6 @@ void treesort(FDIter first, FDIter last)
     }
     tree->inorder(tree,first);
 		delete tree;
-
-    // THE FOLLOWING IS DUMMY CODE. IT WILL PASS ALL TESTS. BUT IT DOES
-    // NOT MEET THE REQUIREMENTS OF THE ASSIGNMENT.
-    // vector<Value> buff(distance(first, last));
-    // copy(first, last, buff.begin());
-    // stable_sort(buff.begin(), buff.end());
-    // copy(buff.begin(), buff.end(), first);
 }
 
 #endif //#ifndef FILE_TREESORT_H_INCLUDED
