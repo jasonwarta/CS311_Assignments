@@ -1,6 +1,7 @@
 // treesort_test.cpp
 // Glenn G. Chappell
 // 19 Nov 2015
+// Updated: 23 Nov 2015
 //
 // For CS 311 Fall 2015
 // Test program for function treesort
@@ -22,6 +23,7 @@
 #include <algorithm>    // for std::stable_sort, std::equal
 #include <iterator>     // for std::advance
 #include <cmath>        // for std::sqrt, std::floor
+#include <cstddef>      // for std::size_t
 #include <cassert>      // for assert
 
 
@@ -546,7 +548,7 @@ void test_treesort_basic_int(Tester & t)
     const std::vector<val> dataCheck
         { 3, 6, 19, -2, 8, 6, 7, 1, 141, -2,
           -200, 4, 6, 6, 11, -5, 32, 2, 7, 0 };
-    assert (dataCheck.size() == DATASIZE);
+    assert (dataCheck.size() == std::size_t(DATASIZE));
 
     // Make copies of data
     std::list<val> data_l(dataCheck.begin(), dataCheck.end());
@@ -647,7 +649,7 @@ void test_treesort_basic_double(Tester & t)
     const std::vector<val> dataCheck
         { 3.1, 6.2, 19.3, -2.4, 8.5, 6.6, 7.7, 1.8, 141.9, -2.0,
           -200.1, 4.2, 6.3, 6.4, 11.5, -5.6, 32.7, 2.8, 7.9, 0.0 };
-    assert (dataCheck.size() == DATASIZE);
+    assert (dataCheck.size() == std::size_t(DATASIZE));
 
     // Make copies of data
     std::list<val> data_l(dataCheck.begin(), dataCheck.end());
@@ -771,10 +773,10 @@ void test_treesort_stability(Tester & t)
 
     std::vector<int> dataX
         { 8, 7, 7, 6, 2, 3, 2, 4, 8, 3, 1, 1, 4, 5, 6, 5 };
-    assert (dataX.size() == SIZE);
+    assert (dataX.size() == std::size_t(SIZE));
     std::vector<int> dataY
         { 1, 1, 2, 1, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2 };
-    assert (dataY.size() == SIZE);
+    assert (dataY.size() == std::size_t(SIZE));
 
     std::vector<MyPair> vp1(SIZE);
     std::vector<MyPair> vp2;

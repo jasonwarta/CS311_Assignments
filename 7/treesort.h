@@ -17,7 +17,6 @@ using std::copy;
 using std::vector;
 #include <iterator>
 using std::distance;
-
 #include <iostream>
 
 // int count = 0;
@@ -29,37 +28,39 @@ struct Node{
 	Node<N> * right_ = nullptr;
 	// size_t size_;
 
-	void add(Node<N> * root, N item){
-		if(item < root->data_){
-			if(root->left_ != nullptr){
-				add(root->left_,item);
+	void add(Node<N> * & root, N item){  //recursion removed version
+		auto * nPointer = root;
+		while(1) { //Keep looping until we hit a return.
+			if(item < nPointer->data_){
+				if(nPointer->left_ != nullptr){
+					nPointer = nPointer->left_ ; //Move to the left child
+				}
+				else {
+					nPointer->left_ = new Node<N>; //Empty spot found, adding node
+					nPointer->left_->data_ = item; //put value in
+					return; //New node added, leave function
+				}
 			}
-			else {
-				root->left_ = new Node<N>;
-				root->left_->data_ = item;
-			}
-		}
-		else{
-			if(root->right_ != nullptr){
-				add(root->right_,item);
-			}
-			else {
-				root->right_ = new Node<N>;
-				root->right_->data_ = item;
+			else{ //Item is greater than the node
+				if(nPointer->right_ != nullptr){  //Node not empty
+					nPointer = nPointer->right_; //Move to right child
+				}
+				else {
+					nPointer->right_ = new Node<N>;  //empty spot found, adding node
+					nPointer->right_->data_ = item;  //put value in
+					return; //New node added, leave function
+				}
 			}
 		}
 	}
 
 	template<typename FDIter>
 	void inorder(Node<N> * root, FDIter & itr){
-		std::cout << "doing inorder" << std::endl;
 		if(root->left_ != nullptr){
 			inorder(root->left_,itr);
 		}
 
-		*itr = root->data_;
-		itr++;
-		
+		*itr++ = root->data_;
 
 		if(root->right_ != nullptr){
 			inorder(root->right_,itr);
@@ -83,24 +84,17 @@ void treesort(FDIter first, FDIter last)
 {
     // Get the type that FDIter points to
     using Value = typename remove_reference<decltype(*first)>::type;
-
+		if (first == last)  //First = last, empty list
+			return; //just return.
     FDIter current = first;
-    Node<Value> * tree;
+    Node<Value> * tree = new Node<Value>;
     tree->data_ = *first;//(tree,*first);
     current++;
 
     for(auto i = current; i != last; i++){
     	tree->add(tree,*i);
     }
-
-   	std::cout << "done copying to tree" << std::endl;
-
     tree->inorder(tree,first);
-
-    std::cout << "done inorder" << std::endl;
-
-
-
 
     // THE FOLLOWING IS DUMMY CODE. IT WILL PASS ALL TESTS. BUT IT DOES
     // NOT MEET THE REQUIREMENTS OF THE ASSIGNMENT.
