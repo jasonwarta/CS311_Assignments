@@ -50,10 +50,9 @@ int main(){
 				ifs.close();
 				return 1;
 			}				
+			if(ifs.eof()) break;  //To prevent double counting the last word.
 			if(count.find(input) == count.end()) count[input] = 1; //Word not found in the mapp, add to map
 			else count[input]++; //Word found, increment count for that word.
-
-//			if(ifs.eof()) break;
 		}
 //Print the listing
 		for(auto i = count.begin(); i != count.end(); i++){
