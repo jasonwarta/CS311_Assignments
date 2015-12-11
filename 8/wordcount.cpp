@@ -3,7 +3,7 @@
 // 10 Dec 2015
 //
 // For CS 311 Fall 2015
-// Header for template treesort and associated structures and functions
+// Counts the number of times different words appear in a file
 // Used in Assignment 8
 
 #include <map>
@@ -20,9 +20,10 @@ using std::endl;
 /*
 Word count takes a file name as input, and outputs a delimited list of the words found within the file and the number of times it occurs.
 If an error is detected during the file read, the count will be aborted and the program will exit.  
-This program is designed for plain text files.  While it will "do it's best" for other files results are not guaranteed.
-Main will not through an error, 
-
+This program is designed for plain text files.  While it will "do it's best" for other files the results are not guaranteed.
+If an invalid file name is presented, it will quit; 
+Requirement:  Valid filename be presented
+Fail to meet requirements:  Program will terminate.
 */
 int main(){
 //Get the file name.  
@@ -33,11 +34,12 @@ int main(){
 	ifstream ifs(fname);
 	if(ifs.bad()) {
 		cout << "Error opening file" << endl;
+		return 1;
 	}
 	string input;
 	map<string, size_t> count;
 
-	if(ifs.is_open()){
+	if(ifs.is_open() && ifs.good()){
 		while(ifs.good()){
 			try {  //Only known time this throws is if the user has input a directory name on windows
 				ifs >> input;
@@ -51,7 +53,7 @@ int main(){
 			if(count.find(input) == count.end()) count[input] = 1; //Word not found in the mapp, add to map
 			else count[input]++; //Word found, increment count for that word.
 
-			if(ifs.eof()) break;
+//			if(ifs.eof()) break;
 		}
 //Print the listing
 		for(auto i = count.begin(); i != count.end(); i++){
